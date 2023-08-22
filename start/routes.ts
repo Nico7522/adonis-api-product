@@ -35,5 +35,10 @@ Route.group(() => {
       Route.put("product/update", "ProductsController.update");
       Route.post("product", "ProductsController.store");
       })
+
+      Route.group(() => {
+        Route.get('command', "CommandsController.index")
+        Route.post('command', "CommandsController.store")
+      })
       
 }).prefix("api");

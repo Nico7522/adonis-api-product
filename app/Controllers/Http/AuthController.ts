@@ -2,15 +2,24 @@ import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import User from "App/Models/User";
 export default class AuthController {
 public async login({ request, auth }: HttpContextContract) {
-
+    console.log(request);
+    
     const email = request.input("email");
     const password = request.input("password");
+    
     
     const token = await auth.use("api").attempt(email, password, {
         expiresIn: "10 days",
         });
-        return token.toJSON();
+       
+    const user = await User.findBy('email', email)
+   
+    
+        return {
+            user: user,
+            token: token.toJSON()}
     }
+    
     
     public async register({ request, auth }: HttpContextContract) {
     
@@ -34,6 +43,8 @@ public async login({ request, auth }: HttpContextContract) {
         	expiresIn: "10 days",
         });
         
-        return token.toJSON();
+        return {
+            user: user,
+            token: token.toJSON()}
     }
 }
