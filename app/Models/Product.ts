@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, ManyToMany, column, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, ManyToMany, column, computed, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import Command from './Command';
 
 export default class Product extends BaseModel {
@@ -16,10 +16,15 @@ export default class Product extends BaseModel {
 
   @manyToMany(() => Command, {
     pivotTable: 'command_products',
-    pivotColumns: ['quantity']
+    
   })
   public commands: ManyToMany<typeof Command>
 
+  @computed()
+  public get quantity() {
+    const quantity = this.$extras.pivot_quantity
+    return quantity
+  }
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updated_at: DateTime
 }
