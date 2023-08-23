@@ -1,12 +1,12 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Command from 'App/Models/Command';
-import Product from 'App/Models/Product';
+
 
 export default class CommandsController {
 
     public async index({ request }: HttpContextContract)
     {
-    const command = await Command.query().preload('user')
+    const command = await Command.query().preload('user').preload('products')
     
     return command
     }
@@ -15,20 +15,21 @@ export default class CommandsController {
         const id = request.body().user_id
         const command = new Command();
         command.user_id = id
-        const productId = request.body().product_id
-        const quantity = request.body().quantity
+        const allProducts = request.body().products
        const created = await command.save()
-        // const product2 = await Product.findOrFail(2)
        
-        await created.related('products').attach({
-            [productId]: {
-                quantity: quantity
-            },
-          
-        })
+        const productData = {};
+        for (const product of allProducts) {
+            productData[product.product_id] = {
+                quantity: product.quantity
+            };
+        }
+    
+        await created.related('products').attach(productData);
+    
         
-        
-        await command.save()
-        return command
+        await created.save();
+    
+        return created;
     }
 }
