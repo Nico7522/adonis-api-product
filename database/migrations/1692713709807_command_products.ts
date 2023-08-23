@@ -8,6 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
       table.integer('command_id').unsigned().notNullable().references('id').inTable('commands');
       table.integer('product_id').unsigned().notNullable().references('id').inTable('products');
+      table.integer('quantity').notNullable()
 
       
       table.timestamps(true, true)

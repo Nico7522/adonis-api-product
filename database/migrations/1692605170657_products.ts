@@ -8,7 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
       table.string('title', 100).notNullable()
       table.text('description').notNullable()
-      table.integer("price").notNullable()
+      table.integer('price', 100).notNullable()
     
       table.timestamps(true, true)
     })

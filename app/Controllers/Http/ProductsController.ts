@@ -1,12 +1,13 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import Product from "App/Models/Product";
 import Todo from "App/Models/Product";
 
 export default class TodosController {
 
     public async index({ request }: HttpContextContract)
     {
-    const todos = await Todo.query();
-    return todos
+    const products = await Product.query();
+    return products
     }
     
     public async show({ auth, request, params}: HttpContextContract)
@@ -14,7 +15,7 @@ export default class TodosController {
     {
         // const user = await auth.authenticate();
         try {
-            const product = await Todo.find(params.id);
+            const product = await Product.find(params.id);
             if(product){
             return product
         }
@@ -41,10 +42,12 @@ export default class TodosController {
     
     public async store({ auth, request, response}: HttpContextContract)
     {
-        const user = await auth.authenticate();
-        const product = new Todo();
+        // const user = await auth.authenticate();
+        const product = new Product();
         product.title = request.input('title');
         product.description = request.input('description');
+        product.price = request.input('price')
+        
         await product.save()
         return product
     }

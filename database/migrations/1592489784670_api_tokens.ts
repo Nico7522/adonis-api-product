@@ -15,6 +15,7 @@ export default class ApiTokens extends BaseSchema {
       table.string("name").notNullable();
       table.string("type").notNullable();
       table.string("token", 64).notNullable();
+      table.date('expires_at')
       table.timestamps(true, true);
     });
   }
