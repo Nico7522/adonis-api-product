@@ -6,6 +6,8 @@ export default class TodosController {
 
     public async index({ request }: HttpContextContract)
     {
+        console.log(request.qs());
+        
     const products = await Product.query();
     return products
     }
@@ -26,7 +28,7 @@ export default class TodosController {
     
     public async update({ auth, request, params}: HttpContextContract)
     {
-        const product = await Todo.find(params.id);
+        const product = await Product.find(params.id);
         if (product) {
             product.title = request.input('title');
             product.description = request.input('description');
@@ -55,7 +57,7 @@ export default class TodosController {
     public async destroy({response, auth, request, params}: HttpContextContract)
     {
         const user = await auth.authenticate();
-        const product = await Todo.query().where('id', params.id).delete();
+        const product = await Product.query().where('id', params.id).delete();
         return response.json({message:"Deleted successfully"})
     }
 }

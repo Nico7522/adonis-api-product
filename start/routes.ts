@@ -25,20 +25,26 @@ Route.get('/', async () => {
 })
 
 Route.group(() => {
+  Route.get("user", "UsersController.index");
+  Route.get("user/:id", "UsersController.show");
+  Route.put("user/:id", "UsersController.update");
+  Route.delete("user/:id", "UsersController.destroy");
 
+}).prefix('api').middleware('auth')
+Route.group(() => {
   Route.post("register", "AuthController.register");
   Route.post("login", "AuthController.login");
-  
-      Route.group(() => {
-      Route.get("product", "ProductsController.index");
-      Route.get("product/:id", "ProductsController.show");
-      Route.put("product/update", "ProductsController.update");
-      Route.post("product", "ProductsController.store");
-      })
 
-      Route.group(() => {
-        Route.get('command', "CommandsController.index")
-        Route.post('command', "CommandsController.store")
-      })
-      
 }).prefix("api");
+
+Route.group(() => {
+  Route.get('command', "CommandsController.index")
+  Route.post('command', "CommandsController.store")
+}).prefix('api');
+
+Route.group(() => {
+Route.get("product", "ProductsController.index");
+Route.get("product/:id", "ProductsController.show");
+Route.put("product/update/:id", "ProductsController.update");
+Route.post("product", "ProductsController.store");
+}).prefix('api');

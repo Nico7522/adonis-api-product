@@ -8,7 +8,7 @@ export default class Command extends BaseModel {
   public id: number
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  public created_at: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
@@ -21,8 +21,8 @@ export default class Command extends BaseModel {
 
   @manyToMany(() => Product, {
     pivotTable: 'command_products',
-    pivotColumns: ['quantity',],
-    
+    pivotColumns: ['quantity']
+
     
   })
   public products: ManyToMany<typeof Product>
