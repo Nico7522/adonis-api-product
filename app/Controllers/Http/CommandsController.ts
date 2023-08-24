@@ -1,8 +1,8 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Command from "App/Models/Command";
-import Product from "App/Models/Product";
 import User from "App/Models/User";
-import { CommandDTO } from "App/dto/commandDTO";
+
+import { CommandDTO, CommandUpdatedDTO } from "App/dto/commandDTO";
 
 export default class CommandsController {
   public async index() {
@@ -31,19 +31,21 @@ export default class CommandsController {
     return created;
   }
 
-  public async updateUser({ request, params }: HttpContextContract) {
+  public async updateUser({ request, params, response }: HttpContextContract) {
     const command = await Command.find(params.id);
-    const newUser = request.input('user_id')
+    const userId = request.input("user_id");
+    const newUser = await User.find(userId);
     if (command && newUser) {
-      // await command.related("user").dissociate();
-      command.user_id = newUser
-   
+      command.user_id = newUser.id;
+      await command.load("products");
       if (await command.save()) {
-        return command;
+        return response.json({
+          message: "command succefully updated",
+          command_updated: new CommandUpdatedDTO(command),
+        });
       }
-      return; // 422
     }
-    return; // 401
+    return response.notModified();
   }
 
   public async updateProduct({
@@ -64,18 +66,17 @@ export default class CommandsController {
       // L'option false rajoute des produits et ne supprime pas les rows déjà existants.
       // await command.related("products").sync(productData, false);
       await command.related("products").sync(productData);
+      command.updated_at = new Date();
       await command.load("products");
-      await command.load("user")
-      
-      // command.updated_at = Date.now()
+      await command.load("user");
+      command.updated_at = Date.now();
       if (await command.save()) {
         return response.json({
           message: "command succefully updated",
-          command_updated: command,
+          command_updated: new CommandUpdatedDTO(command),
         });
       }
-      return; // 422
     }
-    return; // 401
+    return response.notModified();
   }
 }
