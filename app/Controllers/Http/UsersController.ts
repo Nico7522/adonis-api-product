@@ -37,11 +37,8 @@ export default class UsersController {
 
   public async destroy({response,  params}: HttpContextContract)
   {
-   
-
       const user = await User.query().where('id', params.id)
       const userDeleted = await User.query().where('id', params.id).delete()
-      console.log(userDeleted);
       if (userDeleted[0] === 1) {
           return response.json({
             user_deleted: user,

@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, HasOne, ManyToMany, belongsTo, column, computed, hasOne, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, ManyToMany, belongsTo, column,  manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import Product from './Product'
 
@@ -11,7 +11,7 @@ export default class Command extends BaseModel {
   public created_at: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  public updated_at: DateTime
 
   @column()
   public user_id: number 
@@ -21,8 +21,8 @@ export default class Command extends BaseModel {
 
   @manyToMany(() => Product, {
     pivotTable: 'command_products',
-    pivotColumns: ['quantity']
-
+    pivotColumns: ['quantity'],
+    pivotTimestamps: true
     
   })
   public products: ManyToMany<typeof Product>

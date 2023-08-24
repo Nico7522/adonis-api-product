@@ -16,9 +16,12 @@ export default class Product extends BaseModel {
 
   @column.dateTime({ autoCreate: true })
   public created_at: DateTime
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  public updated_at: DateTime
 
   @manyToMany(() => Command, {
     pivotTable: 'command_products',
+    pivotTimestamps: true
 
   })
   public commands: ManyToMany<typeof Command>
@@ -28,6 +31,4 @@ export default class Product extends BaseModel {
     const quantity = this.$extras.pivot_quantity
     return quantity
   }
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updated_at: DateTime
 }
