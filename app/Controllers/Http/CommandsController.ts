@@ -5,7 +5,9 @@ import User from "App/Models/User";
 import { CommandDTO, CommandUpdatedDTO } from "App/dto/commandDTO";
 
 export default class CommandsController {
-  public async index() {
+  public async index({request}: HttpContextContract) {
+    
+    
     const commands = await Command.query().preload("products").preload("user");
 
     return commands.map((command) => new CommandDTO(command));
