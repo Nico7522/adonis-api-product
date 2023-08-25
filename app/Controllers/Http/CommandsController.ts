@@ -6,7 +6,17 @@ import { CommandDTO, CommandUpdatedDTO } from "App/dto/commandDTO";
 
 export default class CommandsController {
   public async index({ request }: HttpContextContract) {
-    console.log(request.cookie("id"));
+    const id = request.cookie("id");
+
+    const commands = await Command.query().preload("products").preload("user");
+    if (commands) {
+      return commands
+    }
+    return null
+
+    // return commands.map((command) => new CommandDTO(command));
+  }
+  public async show({ request }: HttpContextContract) {
     const id = request.cookie("id");
 
     // const commands = await Command.query().preload("products").preload("user");

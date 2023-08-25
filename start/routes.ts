@@ -42,6 +42,7 @@ Route.group(() => {
   Route.post('command', "CommandsController.store")
   Route.put('command/user/:id', "CommandsController.updateUser")
   Route.put('command/product/:id', "CommandsController.updateProduct")
+  Route.get('command/user', "CommandsController.show")
 }).prefix('api');
 
 Route.group(() => {
