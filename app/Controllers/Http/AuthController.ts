@@ -10,7 +10,10 @@ export default class AuthController {
     });
 
     const user = await User.findBy("email", email);
-
+    response.cookie('id', user?.id, {
+      httpOnly: true,
+      secure: true
+    })
     response.json({
       user: user,
       token: token.toJSON(),

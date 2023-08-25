@@ -5,12 +5,21 @@ import User from "App/Models/User";
 import { CommandDTO, CommandUpdatedDTO } from "App/dto/commandDTO";
 
 export default class CommandsController {
-  public async index({request}: HttpContextContract) {
-    
-    
-    const commands = await Command.query().preload("products").preload("user");
+  public async index({ request }: HttpContextContract) {
+    console.log(request.cookie("id"));
+    const id = request.cookie("id");
 
-    return commands.map((command) => new CommandDTO(command));
+    // const commands = await Command.query().preload("products").preload("user");
+    try {
+      const command = await Command.query().where('user_id', id).preload('products')
+      if (command) {
+        return command
+      }
+    } catch (error) {
+      return error;
+    }
+
+    // return commands.map((command) => new CommandDTO(command));
   }
   public async store({ request }: HttpContextContract) {
     const id = request.body().user_id;
