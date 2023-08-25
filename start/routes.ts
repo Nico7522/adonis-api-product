@@ -29,11 +29,13 @@ Route.group(() => {
   Route.get("user/:id", "UsersController.show");
   Route.put("user/:id", "UsersController.update");
   Route.delete("user/:id", "UsersController.destroy");
-
+  
 }).prefix('api').middleware('auth')
+
 Route.group(() => {
   Route.post("register", "AuthController.register");
   Route.post("login", "AuthController.login");
+  Route.get("logout", "AuthController.logout");
 
 }).prefix("api");
 

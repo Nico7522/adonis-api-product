@@ -2,35 +2,32 @@ import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Command from "App/Models/Command";
 import User from "App/Models/User";
 
-import { CommandDTO, CommandUpdatedDTO } from "App/dto/commandDTO";
+import {
+  CommandDTO,
+  CommandForUserDTO,
+  CommandUpdatedDTO,
+} from "App/dto/commandDTO";
 
 export default class CommandsController {
-  public async index({ request }: HttpContextContract) {
-    const id = request.cookie("id");
-
+  public async index() {
     const commands = await Command.query().preload("products").preload("user");
     if (commands) {
-      return commands
+      return commands.map((command) => new CommandDTO(command));
     }
-    return null
-
-    // return commands.map((command) => new CommandDTO(command));
+    return null;
   }
-  public async show({ request }: HttpContextContract) {
+  public async show({ request, response }: HttpContextContract) {
     const id = request.cookie("id");
-
-    // const commands = await Command.query().preload("products").preload("user");
-    try {
-      const command = await Command.query().where('user_id', id).preload('products')
-      if (command) {
-        return command
-      }
-    } catch (error) {
-      return error;
+    const commands = await Command.query()
+      .where("user_id", id)
+      .preload("products");
+    if (commands) {
+      response.json(commands.map((command) => new CommandForUserDTO(command)));
+      return;
     }
-
-    // return commands.map((command) => new CommandDTO(command));
+    response.notFound();
   }
+
   public async store({ request }: HttpContextContract) {
     const id = request.body().user_id;
     const command = new Command();

@@ -20,6 +20,11 @@ export default class AuthController {
     });
   }
 
+  public async logout({response}: HttpContextContract) {
+    response.clearCookie('id')
+    response.json({message: "Succefully logout"})
+  }
+
   public async register({ request, auth }: HttpContextContract) {
     const email = request.input("email");
     const password = request.input("password");
