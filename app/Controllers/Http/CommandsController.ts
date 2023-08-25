@@ -29,9 +29,9 @@ export default class CommandsController {
   }
 
   public async store({ request }: HttpContextContract) {
-    const id = request.body().user_id;
+    const userId = request.cookie('id')  
     const command = new Command();
-    command.user_id = id;
+    command.user_id = userId;
     const allProducts = request.body().products;
     const created = await command.save();
 
@@ -43,10 +43,13 @@ export default class CommandsController {
     }
 
     await created.related("products").attach(productData);
-
     await created.save();
+    const commandPosted = await Command.find(created.id)
+    if (commandPosted) {
+     await commandPosted.load('products')
+    }
 
-    return created;
+    return commandPosted;
   }
 
   public async updateUser({ request, params, response }: HttpContextContract) {
