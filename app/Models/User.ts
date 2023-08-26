@@ -6,8 +6,11 @@ import {
   BaseModel,
   hasMany,
   HasMany,
+  hasOne,
+  HasOne,
 } from '@ioc:Adonis/Lucid/Orm'
 import Command from './Command';
+import Adresse from './Adresse';
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -35,9 +38,12 @@ export default class User extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updated_at: DateTime
+
+  @hasOne(() => Adresse, { serializeAs: "adresse", foreignKey: "user_id" })
+  public adresse: HasOne<typeof Adresse>
   
   @hasMany(() => Command, {
-    serializeAs: 'commands'
+    serializeAs: 'commands', foreignKey: "user_id"
   })
   public commands: HasMany<typeof Command>
     

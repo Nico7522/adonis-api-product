@@ -30,7 +30,7 @@ Route.group(() => {
   Route.put("user/:id", "UsersController.update");
   Route.delete("user/:id", "UsersController.destroy");
   
-}).prefix('api').middleware('auth')
+}).prefix('api')
 
 Route.group(() => {
   Route.post("register", "AuthController.register");

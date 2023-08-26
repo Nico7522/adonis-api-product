@@ -13,6 +13,8 @@ export default class UsersController {
     try {
       const user = await User.find(params.id);
       if (user) {
+        await user.load('adresse')
+        await user.load('commands')
         return new UserDTO(user);
       }
     } catch (error) {

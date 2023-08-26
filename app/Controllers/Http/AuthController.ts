@@ -1,4 +1,5 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import Adresse from "App/Models/Adresse";
 import User from "App/Models/User";
 export default class AuthController {
   public async login({ request, auth, response }: HttpContextContract) {
@@ -26,21 +27,23 @@ export default class AuthController {
   }
 
   public async register({ request, auth }: HttpContextContract) {
+    
     const email = request.input("email");
     const password = request.input("password");
     const name = request.input("name");
     const surname = request.input("surname");
+    const adresse = request.input('adresse')
+   
 
-    /**
-     * Create a new user
-     */
+   
 
     const user = new User();
     user.email = email;
     user.password = password;
     user.name = name;
     user.surname = surname;
-    await user.save();
+    user.save()
+    const userWithAdresse = await user.related('adresse').create(adresse)
 
     const token = await auth.use("api").login(user, {
       expiresIn: "10 days",
