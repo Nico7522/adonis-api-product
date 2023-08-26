@@ -42,8 +42,10 @@ export default class AuthController {
     user.password = password;
     user.name = name;
     user.surname = surname;
-    user.save()
-    const userWithAdresse = await user.related('adresse').create(adresse)
+    await user.save()
+    
+    const adresses = (await Adresse.create(adresse)).related('user').create(user)
+ 
 
     const token = await auth.use("api").login(user, {
       expiresIn: "10 days",

@@ -48,10 +48,7 @@ var Adresse = /** @class */ (function (_super) {
         Orm_1.column.dateTime({ autoCreate: true, autoUpdate: true })
     ], Adresse.prototype, "updatedAt");
     __decorate([
-        Orm_1.column()
-    ], Adresse.prototype, "user_id");
-    __decorate([
-        Orm_1.belongsTo(function () { return User_1["default"]; })
+        Orm_1.hasMany(function () { return User_1["default"]; }, { foreignKey: "adresse_id" })
     ], Adresse.prototype, "user");
     return Adresse;
 }(Orm_1.BaseModel));

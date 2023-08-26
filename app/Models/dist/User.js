@@ -103,13 +103,16 @@ var User = /** @class */ (function (_super) {
         Orm_1.column()
     ], User.prototype, "rememberMeToken");
     __decorate([
+        Orm_1.column()
+    ], User.prototype, "adresse_id");
+    __decorate([
         Orm_1.column.dateTime({ autoCreate: true })
     ], User.prototype, "created_at");
     __decorate([
         Orm_1.column.dateTime({ autoCreate: true, autoUpdate: true })
     ], User.prototype, "updated_at");
     __decorate([
-        Orm_1.hasOne(function () { return Adresse_1["default"]; }, { serializeAs: "adresse", foreignKey: "user_id" })
+        Orm_1.belongsTo(function () { return Adresse_1["default"]; }, { serializeAs: "adresse", foreignKey: "adresse_id" })
     ], User.prototype, "adresse");
     __decorate([
         Orm_1.hasMany(function () { return Command_1["default"]; }, {

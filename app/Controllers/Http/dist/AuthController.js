@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var Adresse_1 = require("App/Models/Adresse");
 var User_1 = require("App/Models/User");
 var AuthController = /** @class */ (function () {
     function AuthController() {
@@ -83,7 +84,7 @@ var AuthController = /** @class */ (function () {
     AuthController.prototype.register = function (_a) {
         var request = _a.request, auth = _a.auth;
         return __awaiter(this, void 0, void 0, function () {
-            var email, password, name, surname, adresse, user, userWithAdresse, token;
+            var email, password, name, surname, adresse, user, adresses, token;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -97,14 +98,16 @@ var AuthController = /** @class */ (function () {
                         user.password = password;
                         user.name = name;
                         user.surname = surname;
-                        user.save();
-                        return [4 /*yield*/, user.related('adresse').create(adresse)];
+                        return [4 /*yield*/, user.save()];
                     case 1:
-                        userWithAdresse = _b.sent();
+                        _b.sent();
+                        return [4 /*yield*/, Adresse_1["default"].create(adresse)];
+                    case 2:
+                        adresses = (_b.sent()).related('user').create(user);
                         return [4 /*yield*/, auth.use("api").login(user, {
                                 expiresIn: "10 days"
                             })];
-                    case 2:
+                    case 3:
                         token = _b.sent();
                         return [2 /*return*/, {
                                 user: user,

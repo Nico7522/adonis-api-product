@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, HasOne, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, HasMany, HasOne, belongsTo, column, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 
 export default class Adresse extends BaseModel {
@@ -24,9 +24,8 @@ export default class Adresse extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @column()
-  public user_id: number 
+ 
 
-  @belongsTo(() => User)
-  public user: BelongsTo<typeof User>
+  @hasMany(() => User, { foreignKey: "adresse_id"})
+  public user: HasMany<typeof User>
 }

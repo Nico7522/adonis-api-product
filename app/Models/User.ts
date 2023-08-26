@@ -8,6 +8,8 @@ import {
   HasMany,
   hasOne,
   HasOne,
+  belongsTo,
+  BelongsTo,
 } from '@ioc:Adonis/Lucid/Orm'
 import Command from './Command';
 import Adresse from './Adresse';
@@ -33,14 +35,17 @@ export default class User extends BaseModel {
   @column()
   public rememberMeToken?: string
 
+  @column()
+  public adresse_id?: number
+
   @column.dateTime({ autoCreate: true })
   public created_at: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updated_at: DateTime
 
-  @hasOne(() => Adresse, { serializeAs: "adresse", foreignKey: "user_id" })
-  public adresse: HasOne<typeof Adresse>
+  @belongsTo(() => Adresse, { serializeAs: "adresse", foreignKey: "adresse_id" })
+  public adresse: BelongsTo<typeof Adresse>
   
   @hasMany(() => Command, {
     serializeAs: 'commands', foreignKey: "user_id"
