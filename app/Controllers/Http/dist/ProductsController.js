@@ -36,100 +36,112 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var User_1 = require("App/Models/User");
-var userDTO_1 = require("App/dto/userDTO");
-var UsersController = /** @class */ (function () {
-    function UsersController() {
+var Product_1 = require("App/Models/Product");
+var TodosController = /** @class */ (function () {
+    function TodosController() {
     }
-    UsersController.prototype.index = function () {
+    TodosController.prototype.index = function (_a) {
+        var request = _a.request;
         return __awaiter(this, void 0, void 0, function () {
-            var users;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, User_1["default"].query().preload('adresse').preload('commands')];
-                    case 1:
-                        users = _a.sent();
-                        return [2 /*return*/, users.map(function (user) { return new userDTO_1.UserDTO(user); })];
-                }
-            });
-        });
-    };
-    UsersController.prototype.show = function (_a) {
-        var params = _a.params;
-        return __awaiter(this, void 0, void 0, function () {
-            var user, error_1;
+            var products;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 5, , 6]);
-                        return [4 /*yield*/, User_1["default"].find(params.id)];
+                        console.log(request.qs());
+                        return [4 /*yield*/, Product_1["default"].query()];
                     case 1:
-                        user = _b.sent();
-                        if (!user) return [3 /*break*/, 4];
-                        return [4 /*yield*/, user.load('adresse')];
-                    case 2:
-                        _b.sent();
-                        return [4 /*yield*/, user.load('commands')];
-                    case 3:
-                        _b.sent();
-                        return [2 /*return*/, new userDTO_1.UserDTO(user)];
-                    case 4: return [3 /*break*/, 6];
-                    case 5:
-                        error_1 = _b.sent();
-                        console.log(error_1);
-                        return [3 /*break*/, 6];
-                    case 6: return [2 /*return*/];
+                        products = _b.sent();
+                        return [2 /*return*/, products];
                 }
             });
         });
     };
-    UsersController.prototype.update = function (_a) {
-        var request = _a.request, params = _a.params;
+    TodosController.prototype.show = function (_a) {
+        var auth = _a.auth, request = _a.request, params = _a.params;
         return __awaiter(this, void 0, void 0, function () {
-            var user;
+            var product, error_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, User_1["default"].find(params.id)];
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, Product_1["default"].find(params.id)];
                     case 1:
-                        user = _b.sent();
-                        if (!user) return [3 /*break*/, 3];
-                        user.name = request.input("name");
-                        user.surname = request.input("surname");
-                        user.email = request.input("email");
-                        return [4 /*yield*/, user.save()];
-                    case 2:
-                        if (_b.sent()) {
-                            return [2 /*return*/, new userDTO_1.UserDTO(user)];
+                        product = _b.sent();
+                        if (product) {
+                            return [2 /*return*/, product];
                         }
-                        return [2 /*return*/];
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_1 = _b.sent();
+                        console.log(error_1);
+                        return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    UsersController.prototype.destroy = function (_a) {
-        var response = _a.response, params = _a.params;
+    TodosController.prototype.update = function (_a) {
+        var auth = _a.auth, request = _a.request, params = _a.params;
         return __awaiter(this, void 0, void 0, function () {
-            var user, userDeleted;
+            var product;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, User_1["default"].query().where('id', params.id)];
+                    case 0: return [4 /*yield*/, Product_1["default"].find(params.id)];
                     case 1:
-                        user = _b.sent();
-                        return [4 /*yield*/, User_1["default"].query().where('id', params.id)["delete"]()];
+                        product = _b.sent();
+                        if (!product) return [3 /*break*/, 3];
+                        product.title = request.input('title');
+                        product.description = request.input('description');
+                        product.price = request.input('price');
+                        product.img = request.input('img');
+                        return [4 /*yield*/, product.save()];
                     case 2:
-                        userDeleted = _b.sent();
-                        if (userDeleted[0] === 1) {
-                            return [2 /*return*/, response.json({
-                                    user_deleted: user,
-                                    message: "Deleted successfully"
-                                })];
+                        if (_b.sent()) {
+                            return [2 /*return*/, product];
                         }
-                        return [2 /*return*/, response.json({ message: "Error" })];
+                        return [2 /*return*/]; // 422
+                    case 3: return [2 /*return*/]; // 401
                 }
             });
         });
     };
-    return UsersController;
+    TodosController.prototype.store = function (_a) {
+        var auth = _a.auth, request = _a.request, response = _a.response;
+        return __awaiter(this, void 0, void 0, function () {
+            var product;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        product = new Product_1["default"]();
+                        product.title = request.input('title');
+                        product.description = request.input('description');
+                        product.price = request.input('price');
+                        product.img = request.input('img');
+                        return [4 /*yield*/, product.save()];
+                    case 1:
+                        _b.sent();
+                        return [2 /*return*/, product];
+                }
+            });
+        });
+    };
+    TodosController.prototype.destroy = function (_a) {
+        var response = _a.response, auth = _a.auth, request = _a.request, params = _a.params;
+        return __awaiter(this, void 0, void 0, function () {
+            var user, product;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, auth.authenticate()];
+                    case 1:
+                        user = _b.sent();
+                        return [4 /*yield*/, Product_1["default"].query().where('id', params.id)["delete"]()];
+                    case 2:
+                        product = _b.sent();
+                        return [2 /*return*/, response.json({ message: "Deleted successfully" })];
+                }
+            });
+        });
+    };
+    return TodosController;
 }());
-exports["default"] = UsersController;
+exports["default"] = TodosController;

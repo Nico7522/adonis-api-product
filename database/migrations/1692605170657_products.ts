@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.string('title', 100).notNullable()
       table.text('description').notNullable()
       table.integer('price', 100).notNullable()
-    
+      table.string('img').notNullable()
       table.timestamps(true, true)
     })
   }

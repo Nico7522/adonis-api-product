@@ -103,7 +103,7 @@ var AuthController = /** @class */ (function () {
                         ];
                     case 1:
                         _b.sent();
-                        adresseToFind = { zip: adresse.zip, street: adresse.street, city: adresse.city, numero: adresse.numero };
+                        adresseToFind = { zip: adresse.zip, street: adresse.street, city: adresse.city, number: adresse.number };
                         return [4 /*yield*/, Adresse_1["default"].query().where(adresseToFind).first()];
                     case 2:
                         isAdressExist = _b.sent();

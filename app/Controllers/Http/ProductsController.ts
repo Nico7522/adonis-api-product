@@ -33,6 +33,7 @@ export default class TodosController {
             product.title = request.input('title');
             product.description = request.input('description');
             product.price = request.input('price')
+            product.img = request.input('img')
             
             if (await product.save()) {
             	return product
@@ -49,6 +50,7 @@ export default class TodosController {
         product.title = request.input('title');
         product.description = request.input('description');
         product.price = request.input('price')
+        product.img = request.input('img')
         
         await product.save()
         return product

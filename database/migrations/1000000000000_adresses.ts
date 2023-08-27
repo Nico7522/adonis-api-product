@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.integer("zip").notNullable();
       table.string("street").notNullable();
       table.string("city").notNullable();
-      table.integer("numero").notNullable();
+      table.integer("number").notNullable();
   
 
       table.timestamps(true, true);

@@ -16,7 +16,7 @@ export default class Adresse extends BaseModel {
   public city: string;
 
   @column()
-  public numero: number;
+  public number: number;
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

@@ -4,7 +4,7 @@ import { UserDTO } from "App/dto/userDTO";
 
 export default class UsersController {
   public async index() {
-    const users = await User.query();
+    const users = await User.query().preload('adresse').preload('commands')
     return users.map((user) => new UserDTO(user));
   }
 

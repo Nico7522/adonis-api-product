@@ -20,36 +20,50 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 var Orm_1 = require("@ioc:Adonis/Lucid/Orm");
-var User_1 = require("./User");
-var Adresse = /** @class */ (function (_super) {
-    __extends(Adresse, _super);
-    function Adresse() {
+var Command_1 = require("./Command");
+var Product = /** @class */ (function (_super) {
+    __extends(Product, _super);
+    function Product() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    Object.defineProperty(Product.prototype, "quantity", {
+        get: function () {
+            var quantity = this.$extras.pivot_quantity;
+            return quantity;
+        },
+        enumerable: false,
+        configurable: true
+    });
     __decorate([
         Orm_1.column({ isPrimary: true })
-    ], Adresse.prototype, "id");
+    ], Product.prototype, "id");
     __decorate([
         Orm_1.column()
-    ], Adresse.prototype, "zip");
+    ], Product.prototype, "title");
     __decorate([
         Orm_1.column()
-    ], Adresse.prototype, "street");
+    ], Product.prototype, "description");
     __decorate([
         Orm_1.column()
-    ], Adresse.prototype, "city");
+    ], Product.prototype, "price");
     __decorate([
         Orm_1.column()
-    ], Adresse.prototype, "number");
+    ], Product.prototype, "img");
     __decorate([
         Orm_1.column.dateTime({ autoCreate: true })
-    ], Adresse.prototype, "createdAt");
+    ], Product.prototype, "created_at");
     __decorate([
         Orm_1.column.dateTime({ autoCreate: true, autoUpdate: true })
-    ], Adresse.prototype, "updatedAt");
+    ], Product.prototype, "updated_at");
     __decorate([
-        Orm_1.hasMany(function () { return User_1["default"]; }, { foreignKey: "adresse_id" })
-    ], Adresse.prototype, "user");
-    return Adresse;
+        Orm_1.manyToMany(function () { return Command_1["default"]; }, {
+            pivotTable: 'command_products',
+            pivotTimestamps: true
+        })
+    ], Product.prototype, "commands");
+    __decorate([
+        Orm_1.computed()
+    ], Product.prototype, "quantity");
+    return Product;
 }(Orm_1.BaseModel));
-exports["default"] = Adresse;
+exports["default"] = Product;
