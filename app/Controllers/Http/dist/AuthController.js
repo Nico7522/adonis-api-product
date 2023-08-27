@@ -84,7 +84,7 @@ var AuthController = /** @class */ (function () {
     AuthController.prototype.register = function (_a) {
         var request = _a.request, auth = _a.auth;
         return __awaiter(this, void 0, void 0, function () {
-            var email, password, name, surname, adresse, user, adresses, token;
+            var email, password, name, surname, adresse, user, adresseToFind, isAdressExist, newAdress, token;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -98,16 +98,31 @@ var AuthController = /** @class */ (function () {
                         user.password = password;
                         user.name = name;
                         user.surname = surname;
-                        return [4 /*yield*/, user.save()];
+                        return [4 /*yield*/, user.save()
+                            // const adresses = (await Adresse.create(adresse)).related('user').create(user)
+                        ];
                     case 1:
                         _b.sent();
-                        return [4 /*yield*/, Adresse_1["default"].create(adresse)];
+                        adresseToFind = { zip: adresse.zip, street: adresse.street, city: adresse.city, numero: adresse.numero };
+                        return [4 /*yield*/, Adresse_1["default"].query().where(adresseToFind).first()];
                     case 2:
-                        adresses = (_b.sent()).related('user').create(user);
-                        return [4 /*yield*/, auth.use("api").login(user, {
-                                expiresIn: "10 days"
-                            })];
+                        isAdressExist = _b.sent();
+                        if (!isAdressExist) return [3 /*break*/, 4];
+                        return [4 /*yield*/, user.related('adresse').associate(isAdressExist)];
                     case 3:
+                        _b.sent();
+                        return [3 /*break*/, 7];
+                    case 4: return [4 /*yield*/, Adresse_1["default"].create(adresse)];
+                    case 5:
+                        newAdress = _b.sent();
+                        return [4 /*yield*/, user.related('adresse').associate(newAdress)];
+                    case 6:
+                        _b.sent();
+                        _b.label = 7;
+                    case 7: return [4 /*yield*/, auth.use("api").login(user, {
+                            expiresIn: "10 days"
+                        })];
+                    case 8:
                         token = _b.sent();
                         return [2 /*return*/, {
                                 user: user,
