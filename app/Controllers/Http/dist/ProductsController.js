@@ -90,10 +90,10 @@ var TodosController = /** @class */ (function () {
                     case 1:
                         product = _b.sent();
                         if (!product) return [3 /*break*/, 3];
-                        product.title = request.input('title');
-                        product.description = request.input('description');
-                        product.price = request.input('price');
-                        product.img = request.input('img');
+                        product.title = request.input("title");
+                        product.description = request.input("description");
+                        product.price = request.input("price");
+                        product.img = request.input("img");
                         return [4 /*yield*/, product.save()];
                     case 2:
                         if (_b.sent()) {
@@ -108,19 +108,25 @@ var TodosController = /** @class */ (function () {
     TodosController.prototype.store = function (_a) {
         var auth = _a.auth, request = _a.request, response = _a.response;
         return __awaiter(this, void 0, void 0, function () {
-            var product;
+            var product, error_2;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
+                        _b.trys.push([0, 2, , 3]);
                         product = new Product_1["default"]();
-                        product.title = request.input('title');
-                        product.description = request.input('description');
-                        product.price = request.input('price');
-                        product.img = request.input('img');
+                        product.title = request.input("title");
+                        product.description = request.input("description");
+                        product.price = request.input("price");
+                        product.img = request.input("img");
+                        product.categorie = request.input("categorie");
                         return [4 /*yield*/, product.save()];
                     case 1:
                         _b.sent();
                         return [2 /*return*/, product];
+                    case 2:
+                        error_2 = _b.sent();
+                        return [2 /*return*/, response.status(422).send(error_2.message)];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -134,7 +140,7 @@ var TodosController = /** @class */ (function () {
                     case 0: return [4 /*yield*/, auth.authenticate()];
                     case 1:
                         user = _b.sent();
-                        return [4 /*yield*/, Product_1["default"].query().where('id', params.id)["delete"]()];
+                        return [4 /*yield*/, Product_1["default"].query().where("id", params.id)["delete"]()];
                     case 2:
                         product = _b.sent();
                         return [2 /*return*/, response.json({ message: "Deleted successfully" })];

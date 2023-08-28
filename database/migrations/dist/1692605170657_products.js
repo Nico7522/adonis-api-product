@@ -12,12 +12,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -55,84 +49,41 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var Orm_1 = require("@ioc:Adonis/Lucid/Orm");
-var Command_1 = require("./Command");
+var Schema_1 = require("@ioc:Adonis/Lucid/Schema");
 var categorie_enum_1 = require("App/enum/categorie.enum");
-var Product = /** @class */ (function (_super) {
-    __extends(Product, _super);
-    function Product() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var default_1 = /** @class */ (function (_super) {
+    __extends(default_1, _super);
+    function default_1() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.tableName = 'products';
+        return _this;
     }
-    Object.defineProperty(Product.prototype, "quantity", {
-        get: function () {
-            var quantity = this.$extras.pivot_quantity;
-            return quantity;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Product.prototype.isCategorieValid = function (categorie) {
-        var enumCate = Object.keys(categorie_enum_1.CategorieEnum);
-        for (var cate in enumCate) {
-            if (enumCate[cate] === categorie.toLocaleUpperCase()) {
-                return true;
-            }
-            return false;
-        }
-    };
-    Product.checkCategorie = function (product) {
+    default_1.prototype.up = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                console.log(product.isCategorieValid(product.categorie));
-                if (!product.isCategorieValid(product.categorie)) {
-                    throw new Error("Catégorie invalide");
-                }
+                this.schema.createTable(this.tableName, function (table) {
+                    table.increments('id');
+                    table.string('title', 100).notNullable();
+                    table.text('description').notNullable();
+                    table.integer('price').notNullable();
+                    table.enu('categorie', Object.values(categorie_enum_1.CategorieEnum)).notNullable();
+                    table.integer('like').defaultTo(0);
+                    table.integer('dislike').defaultTo(0);
+                    table.string('img').notNullable();
+                    table.timestamps(true, true);
+                });
                 return [2 /*return*/];
             });
         });
     };
-    __decorate([
-        Orm_1.column({ isPrimary: true })
-    ], Product.prototype, "id");
-    __decorate([
-        Orm_1.column()
-    ], Product.prototype, "title");
-    __decorate([
-        Orm_1.column()
-    ], Product.prototype, "description");
-    __decorate([
-        Orm_1.column()
-    ], Product.prototype, "price");
-    __decorate([
-        Orm_1.column()
-    ], Product.prototype, "categorie");
-    __decorate([
-        Orm_1.column()
-    ], Product.prototype, "like");
-    __decorate([
-        Orm_1.column()
-    ], Product.prototype, "dislike");
-    __decorate([
-        Orm_1.column()
-    ], Product.prototype, "img");
-    __decorate([
-        Orm_1.column.dateTime({ autoCreate: true })
-    ], Product.prototype, "created_at");
-    __decorate([
-        Orm_1.column.dateTime({ autoCreate: true, autoUpdate: true })
-    ], Product.prototype, "updated_at");
-    __decorate([
-        Orm_1.manyToMany(function () { return Command_1["default"]; }, {
-            pivotTable: "command_products",
-            pivotTimestamps: true
-        })
-    ], Product.prototype, "commands");
-    __decorate([
-        Orm_1.computed()
-    ], Product.prototype, "quantity");
-    __decorate([
-        Orm_1.beforeSave()
-    ], Product, "checkCategorie");
-    return Product;
-}(Orm_1.BaseModel));
-exports["default"] = Product;
+    default_1.prototype.down = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.schema.dropTable(this.tableName);
+                return [2 /*return*/];
+            });
+        });
+    };
+    return default_1;
+}(Schema_1["default"]));
+exports["default"] = default_1;
