@@ -85,7 +85,7 @@ var Product = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 console.log(product.isCategorieValid(product.categorie));
                 if (!product.isCategorieValid(product.categorie)) {
-                    throw new Error("Catégorie invalide");
+                    throw new Error("Invalid categorie");
                 }
                 return [2 /*return*/];
             });

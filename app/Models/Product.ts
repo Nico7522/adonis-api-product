@@ -66,7 +66,7 @@ export default class Product extends BaseModel {
     console.log(product.isCategorieValid(product.categorie));
 
     if (!product.isCategorieValid(product.categorie)) {
-      throw new Error("Catégorie invalide");
+      throw new Error("Invalid categorie");
     }
   }
 }
