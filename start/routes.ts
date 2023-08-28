@@ -50,6 +50,8 @@ Route.group(() => {
 Route.group(() => {
 Route.get("product", "ProductsController.index");
 Route.get("product/:id", "ProductsController.show");
+Route.get("product/categorie/:categorie", "ProductsController.getByCategorie");
 Route.put("product/update/:id", "ProductsController.update");
 Route.post("product", "ProductsController.store");
+Route.put("product/like", "ProductsController.like");
 }).prefix('api');

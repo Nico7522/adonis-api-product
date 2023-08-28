@@ -51,20 +51,19 @@ export default class Product extends BaseModel {
     return quantity;
   }
 
-  public isCategorieValid(categorie: string) {
+  public isCategorieValid(categorie: string): boolean {
     let enumCate = Object.keys(CategorieEnum);
-
-    for (const cate in enumCate) {
-      if (enumCate[cate] === categorie.toLocaleUpperCase()) {
-        return true;
+    let isValid: boolean = false;
+    enumCate.forEach((cate) => {
+      if (cate === categorie.toLocaleUpperCase()) {
+        console.log(cate === categorie.toLocaleUpperCase());
+        return (isValid = true);
       }
-      return false;
-    }
+    });
+    return isValid;
   }
   @beforeSave()
   public static async checkCategorie(product: Product) {
-    console.log(product.isCategorieValid(product.categorie));
-
     if (!product.isCategorieValid(product.categorie)) {
       throw new Error("Invalid categorie");
     }

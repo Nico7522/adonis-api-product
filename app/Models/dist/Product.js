@@ -73,17 +73,18 @@ var Product = /** @class */ (function (_super) {
     });
     Product.prototype.isCategorieValid = function (categorie) {
         var enumCate = Object.keys(categorie_enum_1.CategorieEnum);
-        for (var cate in enumCate) {
-            if (enumCate[cate] === categorie.toLocaleUpperCase()) {
-                return true;
+        var isValid = false;
+        enumCate.forEach(function (cate) {
+            if (cate === categorie.toLocaleUpperCase()) {
+                console.log(cate === categorie.toLocaleUpperCase());
+                return (isValid = true);
             }
-            return false;
-        }
+        });
+        return isValid;
     };
     Product.checkCategorie = function (product) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                console.log(product.isCategorieValid(product.categorie));
                 if (!product.isCategorieValid(product.categorie)) {
                     throw new Error("Invalid categorie");
                 }

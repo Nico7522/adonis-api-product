@@ -47,11 +47,30 @@ var TodosController = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        console.log(request.qs());
+                        console.log(request.qs().categorie);
                         return [4 /*yield*/, Product_1["default"].query()];
                     case 1:
                         products = _b.sent();
                         return [2 /*return*/, products];
+                }
+            });
+        });
+    };
+    TodosController.prototype.getByCategorie = function (_a) {
+        var request = _a.request, params = _a.params;
+        return __awaiter(this, void 0, void 0, function () {
+            var filteredProduct;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        console.log(params.categorie);
+                        return [4 /*yield*/, Product_1["default"].query().where({ 'categorie': params.categorie })];
+                    case 1:
+                        filteredProduct = _b.sent();
+                        if (filteredProduct) {
+                            return [2 /*return*/, filteredProduct];
+                        }
+                        return [2 /*return*/, null];
                 }
             });
         });
@@ -144,6 +163,26 @@ var TodosController = /** @class */ (function () {
                     case 2:
                         product = _b.sent();
                         return [2 /*return*/, response.json({ message: "Deleted successfully" })];
+                }
+            });
+        });
+    };
+    TodosController.prototype.like = function (_a) {
+        var response = _a.response;
+        return __awaiter(this, void 0, void 0, function () {
+            var productToLike;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, Product_1["default"].find(1)];
+                    case 1:
+                        productToLike = _b.sent();
+                        if (!productToLike) return [3 /*break*/, 3];
+                        productToLike.like = productToLike.like + 1;
+                        return [4 /*yield*/, productToLike.save()];
+                    case 2:
+                        _b.sent();
+                        return [2 /*return*/, response.json({ message: "Product liked" })];
+                    case 3: return [2 /*return*/, response.json({ message: "Error" })];
                 }
             });
         });
