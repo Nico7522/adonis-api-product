@@ -57,7 +57,7 @@ var TodosController = /** @class */ (function () {
         });
     };
     TodosController.prototype.getByCategorie = function (_a) {
-        var request = _a.request, params = _a.params;
+        var params = _a.params;
         return __awaiter(this, void 0, void 0, function () {
             var filteredProduct;
             return __generator(this, function (_b) {
@@ -76,7 +76,7 @@ var TodosController = /** @class */ (function () {
         });
     };
     TodosController.prototype.show = function (_a) {
-        var auth = _a.auth, request = _a.request, params = _a.params;
+        var params = _a.params;
         return __awaiter(this, void 0, void 0, function () {
             var product, error_1;
             return __generator(this, function (_b) {
@@ -127,25 +127,19 @@ var TodosController = /** @class */ (function () {
     TodosController.prototype.store = function (_a) {
         var auth = _a.auth, request = _a.request, response = _a.response;
         return __awaiter(this, void 0, void 0, function () {
-            var product, error_2;
+            var productsToCreate, prod, products;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 2, , 3]);
-                        product = new Product_1["default"]();
-                        product.title = request.input("title");
-                        product.description = request.input("description");
-                        product.price = request.input("price");
-                        product.img = request.input("img");
-                        product.categorie = request.input("categorie");
-                        return [4 /*yield*/, product.save()];
+                        productsToCreate = request.body();
+                        prod = [];
+                        productsToCreate.map(function (p) {
+                            prod.push(p);
+                        });
+                        return [4 /*yield*/, Product_1["default"].createMany(prod)];
                     case 1:
-                        _b.sent();
-                        return [2 /*return*/, product];
-                    case 2:
-                        error_2 = _b.sent();
-                        return [2 /*return*/, response.status(422).send(error_2.message)];
-                    case 3: return [2 /*return*/];
+                        products = _b.sent();
+                        return [2 /*return*/, products];
                 }
             });
         });

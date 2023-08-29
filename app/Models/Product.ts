@@ -51,21 +51,21 @@ export default class Product extends BaseModel {
     return quantity;
   }
 
-  public isCategorieValid(categorie: string): boolean {
-    let enumCate = Object.keys(CategorieEnum);
-    let isValid: boolean = false;
-    enumCate.forEach((cate) => {
-      if (cate === categorie.toLocaleUpperCase()) {
-        console.log(cate === categorie.toLocaleUpperCase());
-        return (isValid = true);
-      }
-    });
-    return isValid;
-  }
-  @beforeSave()
-  public static async checkCategorie(product: Product) {
-    if (!product.isCategorieValid(product.categorie)) {
-      throw new Error("Invalid categorie");
-    }
-  }
+  // public isCategorieValid(categorie: string): boolean {
+  //   let enumCate = Object.keys(CategorieEnum);
+  //   let isValid: boolean = false;
+  //   enumCate.forEach((cate) => {
+  //     if (cate === categorie.toLocaleUpperCase()) {
+  //       console.log(cate === categorie.toLocaleUpperCase());
+  //       return (isValid = true);
+  //     }
+  //   });
+  //   return isValid;
+  // }
+  // @beforeSave()
+  // public static async checkCategorie(product: Product) {
+  //   if (!product.isCategorieValid(product.categorie)) {
+  //     throw new Error("Invalid categorie");
+  //   }
+  // }
 }

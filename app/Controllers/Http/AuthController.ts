@@ -28,6 +28,7 @@ export default class AuthController {
   }
 
   public async register({ request, auth }: HttpContextContract) {
+    console.log('dd');
     
     const email = request.input("email");
     const password = request.input("password");

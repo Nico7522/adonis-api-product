@@ -88,6 +88,7 @@ var AuthController = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
+                        console.log('dd');
                         email = request.input("email");
                         password = request.input("password");
                         name = request.input("name");
