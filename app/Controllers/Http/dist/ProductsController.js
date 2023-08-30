@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var Product_1 = require("App/Models/Product");
+var User_1 = require("App/Models/User");
 var TodosController = /** @class */ (function () {
     function TodosController() {
     }
@@ -46,9 +47,7 @@ var TodosController = /** @class */ (function () {
             var products;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0:
-                        console.log(request.qs().categorie);
-                        return [4 /*yield*/, Product_1["default"].query()];
+                    case 0: return [4 /*yield*/, Product_1["default"].query()];
                     case 1:
                         products = _b.sent();
                         return [2 /*return*/, products];
@@ -59,13 +58,20 @@ var TodosController = /** @class */ (function () {
     TodosController.prototype.getByCategorie = function (_a) {
         var params = _a.params;
         return __awaiter(this, void 0, void 0, function () {
-            var filteredProduct;
+            var products, filteredProduct;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         console.log(params.categorie);
-                        return [4 /*yield*/, Product_1["default"].query().where({ 'categorie': params.categorie })];
+                        if (!(params.categorie === "all")) return [3 /*break*/, 2];
+                        return [4 /*yield*/, Product_1["default"].query()];
                     case 1:
+                        products = _b.sent();
+                        return [2 /*return*/, products];
+                    case 2: return [4 /*yield*/, Product_1["default"].query().where({
+                            categorie: params.categorie
+                        })];
+                    case 3:
                         filteredProduct = _b.sent();
                         if (filteredProduct) {
                             return [2 /*return*/, filteredProduct];
@@ -162,21 +168,65 @@ var TodosController = /** @class */ (function () {
         });
     };
     TodosController.prototype.like = function (_a) {
-        var response = _a.response;
+        var request = _a.request, response = _a.response;
         return __awaiter(this, void 0, void 0, function () {
-            var productToLike;
+            var userId, isProductExist, productToLike, isUserExist, alreadyLiked;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, Product_1["default"].find(1)];
+                    case 0:
+                        userId = request.cookie('id');
+                        isProductExist = request.body().id;
+                        return [4 /*yield*/, Product_1["default"].find(isProductExist)];
                     case 1:
                         productToLike = _b.sent();
-                        if (!productToLike) return [3 /*break*/, 3];
-                        productToLike.like = productToLike.like + 1;
-                        return [4 /*yield*/, productToLike.save()];
+                        return [4 /*yield*/, User_1["default"].find(userId)];
                     case 2:
+                        isUserExist = _b.sent();
+                        if (!(productToLike && isUserExist)) return [3 /*break*/, 5];
+                        return [4 /*yield*/, productToLike.related('likes').query().where({ 'user_id': userId })];
+                    case 3:
+                        alreadyLiked = _b.sent();
+                        if (alreadyLiked.length > 0) {
+                            response.notModified();
+                            return [2 /*return*/];
+                        }
+                        productToLike.like = productToLike.like + 1;
+                        productToLike.related('likes').attach([isUserExist.id]);
+                        return [4 /*yield*/, productToLike.save()];
+                    case 4:
                         _b.sent();
-                        return [2 /*return*/, response.json({ message: "Product liked" })];
-                    case 3: return [2 /*return*/, response.json({ message: "Error" })];
+                        return [2 /*return*/, response.json({
+                                message: "Product liked",
+                                product: productToLike
+                            })];
+                    case 5: return [2 /*return*/, response.json({ message: "Error" })];
+                }
+            });
+        });
+    };
+    TodosController.prototype.isLiked = function (_a) {
+        var request = _a.request, params = _a.params;
+        return __awaiter(this, void 0, void 0, function () {
+            var userId, product, alreadyLiked;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        userId = request.cookie('id');
+                        return [4 /*yield*/, Product_1["default"].find(params.id)];
+                    case 1:
+                        product = _b.sent();
+                        if (!(userId && product)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, product.related('likes').query().where({ 'user_id': userId })];
+                    case 2:
+                        alreadyLiked = _b.sent();
+                        if (alreadyLiked.length > 0) {
+                            return [2 /*return*/, true];
+                        }
+                        else {
+                            return [2 /*return*/, false];
+                        }
+                        _b.label = 3;
+                    case 3: return [2 /*return*/, null];
                 }
             });
         });

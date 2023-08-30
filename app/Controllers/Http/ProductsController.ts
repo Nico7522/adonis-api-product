@@ -1,26 +1,28 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Product from "App/Models/Product";
+import User from "App/Models/User";
 import { CategorieEnum } from "App/enum/categorie.enum";
-
 
 export default class TodosController {
   public async index({ request }: HttpContextContract) {
-    console.log(request.qs().categorie);
     const products = await Product.query();
     return products;
   }
 
   public async getByCategorie({ params }: HttpContextContract) {
     console.log(params.categorie);
-    
-    const filteredProduct = await Product.query().where({'categorie': params.categorie})
+    if (params.categorie === "all") {
+      const products = await Product.query();
+      return products;
+    }
+    const filteredProduct = await Product.query().where({
+      categorie: params.categorie,
+    });
     if (filteredProduct) {
-        return filteredProduct
+      return filteredProduct;
     }
 
-    return null
-    
-    
+    return null;
   }
 
   public async show({ params }: HttpContextContract) {
@@ -64,15 +66,14 @@ export default class TodosController {
     // } catch (error) {
     //   return response.status(422).send(error.message);
     // }
-    const productsToCreate = request.body()
-    let prod: Product[] = []
-     productsToCreate.map(p => {
-      prod.push(p)
-    })
-    const products = await Product.createMany(prod)
-    
-    return products
-    
+    const productsToCreate = request.body();
+    let prod: Product[] = [];
+    productsToCreate.map((p) => {
+      prod.push(p);
+    });
+    const products = await Product.createMany(prod);
+
+    return products;
   }
 
   public async destroy({
@@ -86,15 +87,44 @@ export default class TodosController {
     return response.json({ message: "Deleted successfully" });
   }
 
-  public async like({ response }: HttpContextContract) {
-    const productToLike = await Product.find(1);
-    if (productToLike) {
+  public async like({ request, response }: HttpContextContract) {
+    const userId = request.cookie('id')
+    const isProductExist = request.body().id
+    const productToLike = await Product.find(isProductExist);
+    const isUserExist = await User.find(userId)
+    if (productToLike && isUserExist) {
+      const alreadyLiked = await productToLike.related('likes').query().where({'user_id': userId})
+      if (alreadyLiked.length > 0) {
+        response.notModified()
+        return
+      }
       productToLike.like = productToLike.like + 1;
-
+      productToLike.related('likes').attach([isUserExist.id])
       await productToLike.save();
-      return response.json({ message: "Product liked" });
+      return response.json({
+        message: "Product liked",
+        product: productToLike,
+      });
     }
 
     return response.json({ message: "Error" });
+  }
+
+  public async isLiked({ request, params }: HttpContextContract) {
+    const userId = request.cookie('id')
+    const product = await Product.find(params.id)
+ 
+    
+    if (userId && product) {      
+      const alreadyLiked = await product.related('likes').query().where({'user_id': userId})
+      if (alreadyLiked.length > 0) {
+        return true
+      } else {
+        return false
+      }
+    }
+
+    return null
+
   }
 }

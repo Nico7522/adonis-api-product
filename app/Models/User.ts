@@ -10,9 +10,13 @@ import {
   HasOne,
   belongsTo,
   BelongsTo,
+  manyToMany,
+  ManyToMany,
 } from '@ioc:Adonis/Lucid/Orm'
 import Command from './Command';
 import Adresse from './Adresse';
+import Like from './Like';
+import Product from './Product';
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -51,7 +55,13 @@ export default class User extends BaseModel {
     serializeAs: 'commands', foreignKey: "user_id"
   })
   public commands: HasMany<typeof Command>
-    
+
+  @manyToMany(() => Product, {
+    pivotTable: 'likes',
+    pivotTimestamps: true
+  })
+  public productsLiked: ManyToMany<typeof Product>
+
   @beforeSave()
   public static async hashPassword (user: User) {
     if (user.$dirty.password) {

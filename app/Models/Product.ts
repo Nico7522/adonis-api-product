@@ -9,6 +9,8 @@ import {
 } from "@ioc:Adonis/Lucid/Orm";
 import Command from "./Command";
 import { CategorieEnum } from "App/enum/categorie.enum";
+import Like from "./Like";
+import User from "./User";
 
 export default class Product extends BaseModel {
   @column({ isPrimary: true })
@@ -44,6 +46,13 @@ export default class Product extends BaseModel {
     pivotTimestamps: true,
   })
   public commands: ManyToMany<typeof Command>;
+
+  @manyToMany(() => User, {
+    pivotTable: 'likes',
+    pivotTimestamps: true
+    
+  })
+  public likes: ManyToMany<typeof User>
 
   @computed()
   public get quantity() {
