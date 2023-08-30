@@ -62,6 +62,12 @@ export default class User extends BaseModel {
   })
   public productsLiked: ManyToMany<typeof Product>
 
+  @manyToMany(() => Product, {
+    pivotTable: 'dislikes',
+    pivotTimestamps: true
+  })
+  public productsDisliked: ManyToMany<typeof Product>
+
   @beforeSave()
   public static async hashPassword (user: User) {
     if (user.$dirty.password) {

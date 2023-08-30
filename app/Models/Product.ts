@@ -54,6 +54,13 @@ export default class Product extends BaseModel {
   })
   public likes: ManyToMany<typeof User>
 
+  @manyToMany(() => User, {
+    pivotTable: 'dislikes',
+    pivotTimestamps: true
+    
+  })
+  public dislikes: ManyToMany<typeof User>
+
   @computed()
   public get quantity() {
     const quantity = this.$extras.pivot_quantity;

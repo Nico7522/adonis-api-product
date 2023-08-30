@@ -51,8 +51,10 @@ Route.group(() => {
 Route.get("product", "ProductsController.index");
 Route.get("product/:id", "ProductsController.show");
 Route.get("product/isliked/:id", "ProductsController.isLiked");
+Route.get("product/isdisliked/:id", "ProductsController.isDisliked");
 Route.get("product/categorie/:categorie", "ProductsController.getByCategorie");
 Route.put("product/update/:id", "ProductsController.update");
 Route.post("product", "ProductsController.store");
 Route.put("product/like", "ProductsController.like");
+Route.put("product/dislike", "ProductsController.dislike");
 }).prefix('api');

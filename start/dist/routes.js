@@ -83,8 +83,10 @@ Route_1["default"].group(function () {
     Route_1["default"].get("product", "ProductsController.index");
     Route_1["default"].get("product/:id", "ProductsController.show");
     Route_1["default"].get("product/isliked/:id", "ProductsController.isLiked");
+    Route_1["default"].get("product/isdisliked/:id", "ProductsController.isDisliked");
     Route_1["default"].get("product/categorie/:categorie", "ProductsController.getByCategorie");
     Route_1["default"].put("product/update/:id", "ProductsController.update");
     Route_1["default"].post("product", "ProductsController.store");
     Route_1["default"].put("product/like", "ProductsController.like");
+    Route_1["default"].put("product/dislike", "ProductsController.dislike");
 }).prefix('api');

@@ -88,18 +88,21 @@ export default class TodosController {
   }
 
   public async like({ request, response }: HttpContextContract) {
-    const userId = request.cookie('id')
-    const isProductExist = request.body().id
+    const userId = request.cookie("id");
+    const isProductExist = request.body().id;
     const productToLike = await Product.find(isProductExist);
-    const isUserExist = await User.find(userId)
+    const isUserExist = await User.find(userId);
     if (productToLike && isUserExist) {
-      const alreadyLiked = await productToLike.related('likes').query().where({'user_id': userId})
+      const alreadyLiked = await productToLike
+        .related("likes")
+        .query()
+        .where({ user_id: userId });
       if (alreadyLiked.length > 0) {
-        response.notModified()
-        return
+        response.json({message: "Already liked"})
+        return;
       }
       productToLike.like = productToLike.like + 1;
-      productToLike.related('likes').attach([isUserExist.id])
+      productToLike.related("likes").attach([isUserExist.id]);
       await productToLike.save();
       return response.json({
         message: "Product liked",
@@ -111,20 +114,66 @@ export default class TodosController {
   }
 
   public async isLiked({ request, params }: HttpContextContract) {
-    const userId = request.cookie('id')
-    const product = await Product.find(params.id)
- 
-    
-    if (userId && product) {      
-      const alreadyLiked = await product.related('likes').query().where({'user_id': userId})
+    const userId = request.cookie("id");
+    const product = await Product.find(params.id);
+
+    if (userId && product) {
+      const alreadyLiked = await product
+        .related("likes")
+        .query()
+        .where({ user_id: userId });
       if (alreadyLiked.length > 0) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     }
 
-    return null
+    return null;
+  }
 
+  public async isDisliked({ request, params }: HttpContextContract) {
+    const userId = request.cookie("id");
+    const product = await Product.find(params.id);
+
+    if (userId && product) {
+      const alreadyDisliked = await product
+        .related("dislikes")
+        .query()
+        .where({ user_id: userId });
+      if (alreadyDisliked.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    return null;
+  }
+
+  public async dislike({ request, response }: HttpContextContract) {
+    const userId = request.cookie("id");
+    const isProductExist = request.body().id;
+    const productToDislkike = await Product.find(isProductExist);
+    const isUserExist = await User.find(userId);
+    if (productToDislkike && isUserExist) {
+      const alreadyLiked = await productToDislkike
+        .related("dislikes")
+        .query()
+        .where({ user_id: userId });
+      if (alreadyLiked.length > 0) {
+        response.json({message: "Already disliked"})
+        return;
+      }
+      productToDislkike.dislike = productToDislkike.dislike + 1;
+      productToDislkike.related("dislikes").attach([isUserExist.id]);
+      await productToDislkike.save();
+      return response.json({
+        message: "Product disliked",
+        product: productToDislkike,
+      });
+    }
+
+    return response.json({ message: "Error" });
   }
 }

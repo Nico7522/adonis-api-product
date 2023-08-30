@@ -174,7 +174,7 @@ var TodosController = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        userId = request.cookie('id');
+                        userId = request.cookie("id");
                         isProductExist = request.body().id;
                         return [4 /*yield*/, Product_1["default"].find(isProductExist)];
                     case 1:
@@ -183,15 +183,18 @@ var TodosController = /** @class */ (function () {
                     case 2:
                         isUserExist = _b.sent();
                         if (!(productToLike && isUserExist)) return [3 /*break*/, 5];
-                        return [4 /*yield*/, productToLike.related('likes').query().where({ 'user_id': userId })];
+                        return [4 /*yield*/, productToLike
+                                .related("likes")
+                                .query()
+                                .where({ user_id: userId })];
                     case 3:
                         alreadyLiked = _b.sent();
                         if (alreadyLiked.length > 0) {
-                            response.notModified();
+                            response.json({ message: "Already liked" });
                             return [2 /*return*/];
                         }
                         productToLike.like = productToLike.like + 1;
-                        productToLike.related('likes').attach([isUserExist.id]);
+                        productToLike.related("likes").attach([isUserExist.id]);
                         return [4 /*yield*/, productToLike.save()];
                     case 4:
                         _b.sent();
@@ -211,12 +214,15 @@ var TodosController = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        userId = request.cookie('id');
+                        userId = request.cookie("id");
                         return [4 /*yield*/, Product_1["default"].find(params.id)];
                     case 1:
                         product = _b.sent();
                         if (!(userId && product)) return [3 /*break*/, 3];
-                        return [4 /*yield*/, product.related('likes').query().where({ 'user_id': userId })];
+                        return [4 /*yield*/, product
+                                .related("likes")
+                                .query()
+                                .where({ user_id: userId })];
                     case 2:
                         alreadyLiked = _b.sent();
                         if (alreadyLiked.length > 0) {
@@ -227,6 +233,76 @@ var TodosController = /** @class */ (function () {
                         }
                         _b.label = 3;
                     case 3: return [2 /*return*/, null];
+                }
+            });
+        });
+    };
+    TodosController.prototype.isDisliked = function (_a) {
+        var request = _a.request, params = _a.params;
+        return __awaiter(this, void 0, void 0, function () {
+            var userId, product, alreadyDisliked;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        userId = request.cookie("id");
+                        return [4 /*yield*/, Product_1["default"].find(params.id)];
+                    case 1:
+                        product = _b.sent();
+                        if (!(userId && product)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, product
+                                .related("dislikes")
+                                .query()
+                                .where({ user_id: userId })];
+                    case 2:
+                        alreadyDisliked = _b.sent();
+                        if (alreadyDisliked.length > 0) {
+                            return [2 /*return*/, true];
+                        }
+                        else {
+                            return [2 /*return*/, false];
+                        }
+                        _b.label = 3;
+                    case 3: return [2 /*return*/, null];
+                }
+            });
+        });
+    };
+    TodosController.prototype.dislike = function (_a) {
+        var request = _a.request, response = _a.response;
+        return __awaiter(this, void 0, void 0, function () {
+            var userId, isProductExist, productToDislkike, isUserExist, alreadyLiked;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        userId = request.cookie("id");
+                        isProductExist = request.body().id;
+                        return [4 /*yield*/, Product_1["default"].find(isProductExist)];
+                    case 1:
+                        productToDislkike = _b.sent();
+                        return [4 /*yield*/, User_1["default"].find(userId)];
+                    case 2:
+                        isUserExist = _b.sent();
+                        if (!(productToDislkike && isUserExist)) return [3 /*break*/, 5];
+                        return [4 /*yield*/, productToDislkike
+                                .related("dislikes")
+                                .query()
+                                .where({ user_id: userId })];
+                    case 3:
+                        alreadyLiked = _b.sent();
+                        if (alreadyLiked.length > 0) {
+                            response.json({ message: "Already disliked" });
+                            return [2 /*return*/];
+                        }
+                        productToDislkike.dislike = productToDislkike.dislike + 1;
+                        productToDislkike.related("dislikes").attach([isUserExist.id]);
+                        return [4 /*yield*/, productToDislkike.save()];
+                    case 4:
+                        _b.sent();
+                        return [2 /*return*/, response.json({
+                                message: "Product disliked",
+                                product: productToDislkike
+                            })];
+                    case 5: return [2 /*return*/, response.json({ message: "Error" })];
                 }
             });
         });

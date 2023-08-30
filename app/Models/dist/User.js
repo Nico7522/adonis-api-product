@@ -127,6 +127,12 @@ var User = /** @class */ (function (_super) {
         })
     ], User.prototype, "productsLiked");
     __decorate([
+        Orm_1.manyToMany(function () { return Product_1["default"]; }, {
+            pivotTable: 'dislikes',
+            pivotTimestamps: true
+        })
+    ], User.prototype, "productsDisliked");
+    __decorate([
         Orm_1.beforeSave()
     ], User, "hashPassword");
     return User;

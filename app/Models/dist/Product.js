@@ -78,6 +78,12 @@ var Product = /** @class */ (function (_super) {
         })
     ], Product.prototype, "likes");
     __decorate([
+        Orm_1.manyToMany(function () { return User_1["default"]; }, {
+            pivotTable: 'dislikes',
+            pivotTimestamps: true
+        })
+    ], Product.prototype, "dislikes");
+    __decorate([
         Orm_1.computed()
     ], Product.prototype, "quantity");
     return Product;
