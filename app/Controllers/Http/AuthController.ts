@@ -14,7 +14,13 @@ export default class AuthController {
     const user = await User.findBy("email", email);
     response.cookie('id', user?.id, {
       httpOnly: true,
-      secure: true
+      secure: true,
+      maxAge: "10d"
+    })
+    response.plainCookie('token', token.toJSON(), {
+      httpOnly: false,
+      secure: true,
+      maxAge: "10d"
     })
     response.json({
       user: user,
@@ -28,8 +34,6 @@ export default class AuthController {
   }
 
   public async register({ request, auth }: HttpContextContract) {
-    console.log('dd');
-    
     const email = request.input("email");
     const password = request.input("password");
     const name = request.input("name");

@@ -55,6 +55,6 @@ Route.get("product/isdisliked/:id", "ProductsController.isDisliked");
 Route.get("product/categorie/:categorie", "ProductsController.getByCategorie");
 Route.put("product/update/:id", "ProductsController.update");
 Route.post("product", "ProductsController.store");
-Route.put("product/like", "ProductsController.like");
-Route.put("product/dislike", "ProductsController.dislike");
+Route.put("product/like", "ProductsController.like").middleware('auth')
+Route.put("product/dislike", "ProductsController.dislike").middleware('auth')
 }).prefix('api');

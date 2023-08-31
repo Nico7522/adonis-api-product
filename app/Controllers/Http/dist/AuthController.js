@@ -60,7 +60,13 @@ var AuthController = /** @class */ (function () {
                         user = _b.sent();
                         response.cookie('id', user === null || user === void 0 ? void 0 : user.id, {
                             httpOnly: true,
-                            secure: true
+                            secure: true,
+                            maxAge: "10d"
+                        });
+                        response.plainCookie('token', token.toJSON(), {
+                            httpOnly: false,
+                            secure: true,
+                            maxAge: "10d"
                         });
                         response.json({
                             user: user,
@@ -88,7 +94,6 @@ var AuthController = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        console.log('dd');
                         email = request.input("email");
                         password = request.input("password");
                         name = request.input("name");

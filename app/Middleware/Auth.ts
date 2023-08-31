@@ -29,6 +29,8 @@ export default class AuthMiddleware {
      * it can decide the correct response behavior based upon the guard
      * driver
      */
+  
+    
     let guardLastAttempted: string | undefined
 
     for (let guard of guards) {
@@ -59,11 +61,17 @@ export default class AuthMiddleware {
   /**
    * Handle request
    */
-  public async handle ({ auth }: HttpContextContract, next: () => Promise<void>, customGuards: string[]) {
+  public async handle ({ auth, request, response }: HttpContextContract, next: () => Promise<void>, customGuards: string[]) {
     /**
      * Uses the user defined guards or the default guard mentioned in
      * the config file
      */
+   
+   
+    if (!request.headers().authorization) {
+      response.clearCookie('id')
+    }
+    
     const guards = customGuards.length ? customGuards : [auth.name]
     await this.authenticate(auth, guards)
     await next()

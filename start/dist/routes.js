@@ -87,6 +87,6 @@ Route_1["default"].group(function () {
     Route_1["default"].get("product/categorie/:categorie", "ProductsController.getByCategorie");
     Route_1["default"].put("product/update/:id", "ProductsController.update");
     Route_1["default"].post("product", "ProductsController.store");
-    Route_1["default"].put("product/like", "ProductsController.like");
-    Route_1["default"].put("product/dislike", "ProductsController.dislike");
+    Route_1["default"].put("product/like", "ProductsController.like").middleware('auth');
+    Route_1["default"].put("product/dislike", "ProductsController.dislike").middleware('auth');
 }).prefix('api');

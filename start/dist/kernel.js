@@ -1,3 +1,4 @@
+"use strict";
 /*
 |--------------------------------------------------------------------------
 | Application middleware
@@ -8,9 +9,8 @@
 | preferred, since they keep this file clean.
 |
 */
-
-import Server from '@ioc:Adonis/Core/Server'
-
+exports.__esModule = true;
+var Server_1 = require("@ioc:Adonis/Core/Server");
 /*
 |--------------------------------------------------------------------------
 | Global middleware
@@ -20,11 +20,9 @@ import Server from '@ioc:Adonis/Core/Server'
 | are defined for every HTTP requests.
 |
 */
-Server.middleware.register([
-  () => import('@ioc:Adonis/Core/BodyParser'),
-
-])
-
+Server_1["default"].middleware.register([
+    function () { return Promise.resolve().then(function () { return require('@ioc:Adonis/Core/BodyParser'); }); },
+]);
 /*
 |--------------------------------------------------------------------------
 | Named middleware
@@ -41,7 +39,7 @@ Server.middleware.register([
 | Route.get('dashboard', 'UserController.dashboard').middleware('auth')
 |
 */
-Server.middleware.registerNamed({
-  auth: 'App/Middleware/Auth',
-  cookie: 'App/Middleware/Cookie',
-})
+Server_1["default"].middleware.registerNamed({
+    auth: 'App/Middleware/Auth',
+    cookie: 'App/Middleware/Cookie'
+});
