@@ -82,13 +82,14 @@ var AuthController = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_b) {
                 response.clearCookie('id');
+                response.clearCookie('token');
                 response.json({ message: "Succefully logout" });
                 return [2 /*return*/];
             });
         });
     };
     AuthController.prototype.register = function (_a) {
-        var request = _a.request, auth = _a.auth;
+        var request = _a.request, response = _a.response, auth = _a.auth;
         return __awaiter(this, void 0, void 0, function () {
             var email, password, name, surname, adresse, user, adresseToFind, isAdressExist, newAdress, token;
             return __generator(this, function (_b) {
@@ -130,6 +131,16 @@ var AuthController = /** @class */ (function () {
                         })];
                     case 8:
                         token = _b.sent();
+                        response.cookie('id', user === null || user === void 0 ? void 0 : user.id, {
+                            httpOnly: true,
+                            secure: true,
+                            maxAge: "10d"
+                        });
+                        response.plainCookie('token', token.toJSON(), {
+                            httpOnly: false,
+                            secure: true,
+                            maxAge: "10d"
+                        });
                         return [2 /*return*/, {
                                 user: user,
                                 token: token.toJSON()
