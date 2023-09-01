@@ -47,7 +47,6 @@ export default class AuthController {
     user.surname = surname;
     await user.save()
 
-    // const adresses = (await Adresse.create(adresse)).related('user').create(user)
     const adresseToFind = {zip: adresse.zip, street: adresse.street, city: adresse.city, number: adresse.number}
     const isAdressExist = await Adresse.query().where(adresseToFind).first()
     if (isAdressExist) {

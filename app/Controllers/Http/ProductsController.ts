@@ -98,8 +98,13 @@ export default class TodosController {
         .query()
         .where({ user_id: userId });
       if (alreadyLiked.length > 0) {
-        response.json({message: "Already liked"})
-        return;
+        productToLike.related('likes').detach(isProductExist.id)
+        productToLike.like = productToLike.like - 1;
+        await productToLike.save();
+        return response.json({
+          message: "Like removed",
+          product: productToLike,
+        });
       }
       productToLike.like = productToLike.like + 1;
       productToLike.related("likes").attach([isUserExist.id]);
@@ -162,8 +167,13 @@ export default class TodosController {
         .query()
         .where({ user_id: userId });
       if (alreadyLiked.length > 0) {
-        response.json({message: "Already disliked"})
-        return;
+        productToDislkike.related('dislikes').detach(isProductExist.id)
+        productToDislkike.dislike = productToDislkike.dislike - 1;
+        await productToDislkike.save();
+        return response.json({
+          message: "dislike removed",
+          product: productToDislkike,
+        });
       }
       productToDislkike.dislike = productToDislkike.dislike + 1;
       productToDislkike.related("dislikes").attach([isUserExist.id]);

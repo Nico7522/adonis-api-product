@@ -182,27 +182,34 @@ var TodosController = /** @class */ (function () {
                         return [4 /*yield*/, User_1["default"].find(userId)];
                     case 2:
                         isUserExist = _b.sent();
-                        if (!(productToLike && isUserExist)) return [3 /*break*/, 5];
+                        if (!(productToLike && isUserExist)) return [3 /*break*/, 7];
                         return [4 /*yield*/, productToLike
                                 .related("likes")
                                 .query()
                                 .where({ user_id: userId })];
                     case 3:
                         alreadyLiked = _b.sent();
-                        if (alreadyLiked.length > 0) {
-                            response.json({ message: "Already liked" });
-                            return [2 /*return*/];
-                        }
+                        if (!(alreadyLiked.length > 0)) return [3 /*break*/, 5];
+                        productToLike.related('likes').detach(isProductExist.id);
+                        productToLike.like = productToLike.like - 1;
+                        return [4 /*yield*/, productToLike.save()];
+                    case 4:
+                        _b.sent();
+                        return [2 /*return*/, response.json({
+                                message: "Like removed",
+                                product: productToLike
+                            })];
+                    case 5:
                         productToLike.like = productToLike.like + 1;
                         productToLike.related("likes").attach([isUserExist.id]);
                         return [4 /*yield*/, productToLike.save()];
-                    case 4:
+                    case 6:
                         _b.sent();
                         return [2 /*return*/, response.json({
                                 message: "Product liked",
                                 product: productToLike
                             })];
-                    case 5: return [2 /*return*/, response.json({ message: "Error" })];
+                    case 7: return [2 /*return*/, response.json({ message: "Error" })];
                 }
             });
         });
@@ -282,27 +289,34 @@ var TodosController = /** @class */ (function () {
                         return [4 /*yield*/, User_1["default"].find(userId)];
                     case 2:
                         isUserExist = _b.sent();
-                        if (!(productToDislkike && isUserExist)) return [3 /*break*/, 5];
+                        if (!(productToDislkike && isUserExist)) return [3 /*break*/, 7];
                         return [4 /*yield*/, productToDislkike
                                 .related("dislikes")
                                 .query()
                                 .where({ user_id: userId })];
                     case 3:
                         alreadyLiked = _b.sent();
-                        if (alreadyLiked.length > 0) {
-                            response.json({ message: "Already disliked" });
-                            return [2 /*return*/];
-                        }
+                        if (!(alreadyLiked.length > 0)) return [3 /*break*/, 5];
+                        productToDislkike.related('dislikes').detach(isProductExist.id);
+                        productToDislkike.dislike = productToDislkike.dislike - 1;
+                        return [4 /*yield*/, productToDislkike.save()];
+                    case 4:
+                        _b.sent();
+                        return [2 /*return*/, response.json({
+                                message: "dislike removed",
+                                product: productToDislkike
+                            })];
+                    case 5:
                         productToDislkike.dislike = productToDislkike.dislike + 1;
                         productToDislkike.related("dislikes").attach([isUserExist.id]);
                         return [4 /*yield*/, productToDislkike.save()];
-                    case 4:
+                    case 6:
                         _b.sent();
                         return [2 /*return*/, response.json({
                                 message: "Product disliked",
                                 product: productToDislkike
                             })];
-                    case 5: return [2 /*return*/, response.json({ message: "Error" })];
+                    case 7: return [2 /*return*/, response.json({ message: "Error" })];
                 }
             });
         });

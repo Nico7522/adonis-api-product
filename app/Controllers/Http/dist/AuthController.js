@@ -105,9 +105,7 @@ var AuthController = /** @class */ (function () {
                         user.password = password;
                         user.name = name;
                         user.surname = surname;
-                        return [4 /*yield*/, user.save()
-                            // const adresses = (await Adresse.create(adresse)).related('user').create(user)
-                        ];
+                        return [4 /*yield*/, user.save()];
                     case 1:
                         _b.sent();
                         adresseToFind = { zip: adresse.zip, street: adresse.street, city: adresse.city, number: adresse.number };
