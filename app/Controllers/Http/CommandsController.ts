@@ -18,6 +18,8 @@ export default class CommandsController {
   }
   public async show({ request, response }: HttpContextContract) {
     const id = request.cookie("id");
+    
+    
     const commands = await Command.query()
       .where("user_id", id)
       .preload("products");

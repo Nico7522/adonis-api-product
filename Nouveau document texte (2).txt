@@ -1,0 +1,75 @@
+[
+{
+  "title": "Pizza Spicy Pepperoni Deluxe",
+  "description": "Une pizza épicée avec une base de sauce tomate piquante, une généreuse portion de pepperoni tranché et de la mozzarella fondante.",
+  "price": 11.99,
+  "categorie": "pizza",
+  "like": 0,
+  "dislike": 0,
+  "img": "/images/spicy_pepperoni.jpeg"
+},
+{
+  "title": "Pizza Végétarienne Méditerranéenne",
+  "description": "Une pizza végétarienne inspirée de la cuisine méditerranéenne, garnie d'olives Kalamata, de tomates séchées au soleil, de poivrons et de mozzarella fondante.",
+  "price": 10.49,
+  "categorie": "pizza",
+  "like": 0,
+  "dislike": 0,
+  "img": "/images/vegetarian_mediterranean.jpeg"
+},
+{
+  "title": "Pizza Carnivore Suprême",
+  "description": "Une pizza pour les amateurs de viande, avec du pepperoni, du jambon, du bacon croustillant et des saucisses italiennes sur une base de sauce tomate et de mozzarella.",
+  "price": 12.99,
+  "categorie": "pizza",
+  "like": 0,
+  "dislike": 0,
+  "img": "/images/meat_lovers_supreme.jpeg"
+},
+{
+  "title": "Pizza Blanche aux Trois Fromages",
+  "description": "Une pizza sans sauce tomate, mais avec une combinaison luxueuse de fromages : mozzarella fondante, ricotta crémeuse et parmesan râpé, le tout agrémenté d'ail.",
+  "price": 10.99,
+  "categorie": "pizza",
+  "like": 0,
+  "dislike": 0,
+  "img": "/images/three_cheese_white_pizza.jpeg"
+},
+{
+  "title": "Limonade Rafraîchissante",
+  "description": "Une boisson pétillante et acidulée, parfaite pour se désaltérer par temps chaud.",
+  "price": 3.49,
+  "categorie": "boisson",
+  "like": 0,
+  "dislike": 0,
+  "img": "/images/lemonade.jpg"
+},
+{
+  "title": "Thé Vert Citronné",
+  "description": "Une infusion légère de thé vert associée à des notes rafraîchissantes de citron, idéale pour une pause détente.",
+  "price": 2.99,
+  "categorie": "boisson",
+  "like": 0,
+  "dislike": 0,
+  "img": "/images/green_tea_lemon.jpg"
+},
+{
+  "title": "Smoothie Fruits Tropicaux",
+  "description": "Un mélange exotique de mangue, d'ananas et de banane pour une explosion de saveurs fruitées dans chaque gorgée.",
+  "price": 4.79,
+  "categorie": "boisson",
+  "like": 0,
+  "dislike": 0,
+  "img": "/images/tropical_smoothie.jpg"
+},
+{
+  "title": "Café Glacé Mocha",
+  "description": "Un délicieux mélange de café fort, de chocolat et de lait glacé, parfait pour les amateurs de café et de chocolat.",
+  "price": 4.99,
+  "categorie": "boisson",
+  "like": 0,
+  "dislike": 0,
+  "img": "/images/iced_mocha.jpg"
+}
+
+]
