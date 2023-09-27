@@ -82,16 +82,20 @@ var CommandsController = /** @class */ (function () {
         });
     };
     CommandsController.prototype.store = function (_a) {
-        var request = _a.request;
+        var request = _a.request, response = _a.response;
         return __awaiter(this, void 0, void 0, function () {
-            var userId, command, allProducts, created, productData, _i, allProducts_1, product, commandPosted;
+            var userId, allProducts, command, created, productData, _i, allProducts_1, product, commandPosted;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        userId = request.cookie('id');
+                        userId = request.cookie("id");
+                        allProducts = request.body().products;
+                        if (!userId || allProducts.length < 1) {
+                            return [2 /*return*/, response.notFound()];
+                        }
                         command = new Command_1["default"]();
                         command.user_id = userId;
-                        allProducts = request.body().products;
+                        console.log(allProducts);
                         return [4 /*yield*/, command.save()];
                     case 1:
                         created = _b.sent();
@@ -112,7 +116,7 @@ var CommandsController = /** @class */ (function () {
                     case 4:
                         commandPosted = _b.sent();
                         if (!commandPosted) return [3 /*break*/, 6];
-                        return [4 /*yield*/, commandPosted.load('products')];
+                        return [4 /*yield*/, commandPosted.load("products")];
                     case 5:
                         _b.sent();
                         _b.label = 6;

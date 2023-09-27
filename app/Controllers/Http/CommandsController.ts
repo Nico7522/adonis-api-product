@@ -18,8 +18,7 @@ export default class CommandsController {
   }
   public async show({ request, response }: HttpContextContract) {
     const id = request.cookie("id");
-    
-    
+
     const commands = await Command.query()
       .where("user_id", id)
       .preload("products");
@@ -30,11 +29,16 @@ export default class CommandsController {
     response.notFound();
   }
 
-  public async store({ request }: HttpContextContract) {
-    const userId = request.cookie('id')  
+  public async store({ request, response }: HttpContextContract) {
+    const userId = request.cookie("id");
+    const allProducts = request.body().products;
+
+    if (!userId || allProducts.length < 1) {
+      return response.notFound();
+    }
     const command = new Command();
     command.user_id = userId;
-    const allProducts = request.body().products;
+    console.log(allProducts);
     const created = await command.save();
 
     const productData = {};
@@ -46,9 +50,9 @@ export default class CommandsController {
 
     await created.related("products").attach(productData);
     await created.save();
-    const commandPosted = await Command.find(created.id)
+    const commandPosted = await Command.find(created.id);
     if (commandPosted) {
-     await commandPosted.load('products')
+      await commandPosted.load("products");
     }
 
     return commandPosted;
